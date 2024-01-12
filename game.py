@@ -58,8 +58,6 @@ while True:
                     print('Number of players must be a interger!\n')
                 except Exception:
                     print('There must be at least 1 player!\n')
-                
-            
 
             for i in range(player_count):
                 player_name = input(f'What is the name of player{i+1}?\n')
