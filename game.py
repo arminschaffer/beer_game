@@ -87,9 +87,12 @@ while True:
                 try:
                     new_beer = input('Does anyone have a new beer? [y/n]\n')
                     if new_beer == 'y':
-                        new_beer_player = input(f'Who got a new beer? \n')
+                        new_beer_player = input('Who got a new beer? \n')
                         
                         # check if name exists
+                        if new_beer_player not in game_data.get('player_names'):
+                            print('Please only enter present player names!\n')
+                            continue
                         
                         # new beer weight
                         new_beer_weight = int(input(f"How much does {new_beer_player}'s drink weigh?\n"))
@@ -168,20 +171,30 @@ while True:
                 except ValueError:
                     print('Weights must be integers!\n')
         
-        # winner
+        # winners
         winners_i = [i for i, e in enumerate(point_list) if e == min(point_list)]
         
-        if len(winners_i) == 1:
+        if len(winners_i) == 1:  # single winner
             winner_i = winners_i[0]
             winner_name = game_data.get('player_names')[winner_i]
-        else:
+        else:  # multiple winners tie
             winner_names = []
             for winner_i in winners_i:
                 winner_names.append(game_data.get('player_names')[winner_i])
             
             print(('We have a tie between' + len(winner_names) * ' {} &').format(*winner_names)[:-2] + '!')
-            winner_name = input('Who gets the point?\n')
-            winner_i = game_data.get('player_names').index(winner_name)
+            
+            # declare winner
+            while True:
+                winner_name = input('Who gets the point?\n')
+                
+                # check if name exists
+                if winner_name not in game_data.get('player_names'):
+                    print('Please only enter present player names!\n')
+                    continue
+                
+                winner_i = game_data.get('player_names').index(winner_name)
+                break
         
         # score of round
         print('\nSCORES')
